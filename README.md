@@ -1,1 +1,2 @@
-# SDK-Win64
+# indem-module-sdk
+Binocular Vision Inertial Module
