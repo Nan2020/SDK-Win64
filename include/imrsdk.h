@@ -100,6 +100,10 @@ namespace indem {
         * \brief 查询模组信息
         */
         ImrModuleDeviceInfo GetModuleInfo();
+        /*
+        * \brief 查询模组标定信息
+        */
+        CameraCalibrationParameter GetModuleParams();
         
 		/*
 		* \brief 添加头显位姿回调函数

@@ -34,8 +34,8 @@ namespace indem {
         double _Pr[12];     //3X4 基线校正后右相机投影矩阵
         double _Rl[9];      //3X3 基线校正后左相机旋转矩阵
         double _Rr[9];      //3X3 基线校正后左相机旋转矩阵
-        double _TSCl[12];   //3X4 左相机系到传感器坐标系的变换
-        double _TSCr[12];   //3X4 右相机系到传感器坐标系的变换
+        double _TSCl[16];   //4X4 左相机系到传感器坐标系的变换
+        double _TSCr[16];   //4X4 右相机系到传感器坐标系的变换
 
         /*  加计参数,3X4矩阵,每个元素如下
         *    x   y   z
@@ -106,7 +106,14 @@ namespace indem {
     };
 }
 
-/*
-* \brief 在SDK初始化、获取插件信息的时候该接口都会调用,因此该接口的实现应该尽可能的简单
-*/
-ALGORITHM_DLL_EXPORT indem::IAlgorithmPlugin* AlgorithmFactory();
+#ifdef __cplusplus
+extern "C" {
+#endif
+	/*
+	* \brief 在SDK初始化、获取插件信息的时候该接口都会调用,因此该接口的实现应该尽可能的简单
+	*/
+	ALGORITHM_DLL_EXPORT indem::IAlgorithmPlugin* AlgorithmFactory();
+
+#ifdef __cplusplus
+}
+#endif
