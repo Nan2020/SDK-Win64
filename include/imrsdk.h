@@ -61,7 +61,6 @@ namespace indem {
         char loadPath[128];         //设置数据载入路径
         bool bSlam;                 //是否使用slam，使用slam=true
         char slamPath[128];         //设置用户自定义的slam动态库路径,空表示使用默认slam
-        unsigned int imgFreq;       //设置图像发送频率
     };
 
 	//可以检测的设备能力

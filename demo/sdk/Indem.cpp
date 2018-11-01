@@ -94,7 +94,7 @@ void GetCameraCallback(double, ImrImage pData, void*) {
 	//imwrite("D:/indemTest.jpg", img);
 }
 
-void HMDPoseCallback(int, void* pData, void* pParam) {
+void PoseCallback(int, void* pData, void* pParam) {
 	ImrModulePose* pHeadPose = (ImrModulePose*)pData;
 	//检查两次之间的间隔距离平方应当小于5cm
 	static double sdX = 0, sdY = 0, sdZ = 0;
@@ -176,25 +176,6 @@ indem::CIMRSDK* CreateImrSDK(bool bOpenSlam, bool bDataSet = false)
 {
 	indem::CIMRSDK* pSDK = new indem::CIMRSDK();
 	indem::MRCONFIG config = { 0 };
-	//set slam freq = 60ms
-	config.imgFreq = 60;
-#ifdef CMAKE_INTDIR
-	if (strcmp(CMAKE_INTDIR, "RelWithDebInfo") == 0) {
-		//strcpy(config.loadPath, "D:/DL");
-	}
-	else {//200服务器环境
-#else
-		{
-#endif
-			if (bDataSet) {
-#ifdef WIN32
-				strcpy(config.loadPath, "D:/indemind/test/motionless");
-#else
-				strcpy(config.loadPath, "/opt/test/motionless");
-#endif
-			}
-		}
-
 		//Init SDK
 		config.bSlam = bOpenSlam;
 		bool flag = pSDK->Init(config);
@@ -606,33 +587,11 @@ TEST(Indem, Initailize) {
     //RegistDisconnectCallback(HotPlugCallback, NULL);
     CIMRSDK* pSDK = new CIMRSDK();
     MRCONFIG config = { 0 };
-    //设置slam频率为60ms
-    config.imgFreq = 60;
     //strcpy(config.slamPath, "E:/Program Files/indemind/Software Develop Kit/slam.dll");
 
-#ifdef CMAKE_INTDIR
-    if (strcmp(CMAKE_INTDIR, "RelWithDebInfo") == 0) {
-        //strcpy(config.loadPath, "D:/DL");
-    }
-    else {//200服务器环境
-#else
-    {
-#endif
-#ifdef WIN32
-        strcpy(config.loadPath, "D:/indemind/test/motionless");
-#else
-        strcpy(config.loadPath, "/opt/test/motionless");
-#endif
-    }
-
-    //注册头显位姿回调函数
-    //pSDK->RegistModulePoseCallback(HMDPoseCallback, NULL);
+    //pSDK->RegistModulePoseCallback(PoseCallback, NULL);
     config.bSlam = true;
     EXPECT_TRUE(pSDK->Init(config));
-    //设置平面检测回调函数
-    //EXPECT_TRUE(pSDK->AddPlaindetectCallback(PlaneCallback, NULL));
-    //pSDK->AddRecognizeCallback(SenmiticCallback, NULL);
-    //pSDK->AddPluginCallback("semanticmap", "result", SenmiticCallback, NULL);
 	g_save = true;
 	std::thread savefie_thd(std::bind(SaveImu));
 	std::thread saveimg_thd(std::bind(SaveImg));
@@ -658,33 +617,12 @@ TEST(Indem, Initailize) {
     //注册摄像头画面回调函数
     //pSDK->AddPluginCallback("seethrough", "image", SeeThrougthCallback, NULL);
     //std::cout << "Start Motionless Test" << std::endl;
-    //获取图像大小
-    //ImrSize iSize = { 0 };
-    //if (pSDK->InvokePluginMethod("seethrough", "size", NULL, &iSize) == 0) {
-    //    ASSERT_TRUE(iSize._width != 0);
-    //    ASSERT_TRUE(iSize._height != 0);
-    //    g_iImageWidth = iSize._width;
-    //    g_iImageHeight = iSize._height;
-    //}
     //std::this_thread::sleep_for(std::chrono::seconds(15));
     //关闭摄像头画面回调函数
-    //pSDK->AddPluginCallback("seethrough", "image", NULL, NULL);
-    //动态关闭平面检测
-        //EXPECT_TRUE(pSDK->AddPlaindetectCallback(NULL, NULL));
 	//pSDK->AddPluginCallback("depthimage", "depth", NULL, NULL);
     //Sleep(5 * 1000);
-    //再次设置平面检测回调函数
-        //EXPECT_TRUE(pSDK->AddPlaindetectCallback(PlaneCallback, NULL));
-    //Sleep(1 * 30 * 1000);
-    //动态关闭平面检测
-        //EXPECT_TRUE(pSDK->AddPlaindetectCallback(NULL, NULL));
-    //std::this_thread::sleep_for(std::chrono::seconds(5));
-    //设置深度学习回调函数
-    //EXPECT_TRUE(pSDK->AddRecognizeCallback(SenmiticCallback, NULL));
     std::this_thread::sleep_for(std::chrono::seconds(60 ));
-    //EXPECT_TRUE(pSDK->AddRecognizeCallback(NULL, NULL));
     //Sleep(5 * 1000);
-    //EXPECT_TRUE(pSDK->AddRecognizeCallback(SenmiticCallback, NULL));
     std::cout << "-----------------------END1--------------------" << std::endl;
 	outfiless.close();
 	outfile.close();
