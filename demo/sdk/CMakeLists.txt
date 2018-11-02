@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 2.8)
 project(TestIndem)
 
 #set include
-FILE(GLOB_RECURSE TEST_HEADER_FILES include/*.h *.h)
+FILE(GLOB_RECURSE TEST_HEADER_FILES include/*.h *.h ../../include)
 file(GLOB_RECURSE TEST_SOURCE_FILES *.cpp)
 set(HEADER_DIR include)
 include_directories(${TEST_HEADER_FILES})
@@ -15,7 +15,7 @@ add_executable(${PROJECT_NAME} ${TEST_SOURCE_FILES} ${TEST_HEADER_FILES})
 #set link libraries
 if(WIN32)
 target_link_libraries(${PROJECT_NAME}
-   indem)
+   ../../indem.lib)
 else(WIN32)
 target_link_libraries(${PROJECT_NAME} gtest indem ${SLAM_LIB} tbb 
 	cholmod
