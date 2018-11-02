@@ -2,17 +2,21 @@
 Binocular Vision Inertial Module
 
 
-INDEMIND˫Ŀ�Ӿ�����ģ�����ȫ�ֿ��ŵ�2*1280*800@50FPS��������ͷ�����ṩˮƽ120�㡢����75���ӳ��ǣ���ϸ�֡��6��IMU��������ΪSLAM���㷨�ṩǿ����ǰ�����ݲɼ�������
-INDEMIND˫Ŀ�Ӿ�����ģ��SDK�ṩ���½ӿڣ�
-1���豸��Ϣ��
-2��ͼ�����ݣ�
-3��IMU���ݣ�
-4��SLAM��
-5�����ͼ��
-��ϸ��Ϣ�ο���˫Ŀ����ģ���û�ʹ��˵������
-֧��ƽ̨��֧��Linux18.04��Windows10ƽ̨��
+INDEMIND双目视觉惯性模组采用全局快门的2X1280X800@50FPS高清摄像头，可提供水平120°、垂向75°视场角，结合高帧率6轴IMU传感器，为SLAM等算法提供强有力前端数据采集能力。
 
 
-ģ�����ݲɼ��������ɼ�ģ��ͼ��IMU���ݣ��������EuRoC���ݼ���ʽ�������û�ʹ�á�
-��ϸ��Ϣ�ο���ģ�����ݲɼ�����˵���ĵ���
-֧��Linux18.04��Windows10ƽ̨��
+INDEMIND双目视觉惯性模组SDK提供如下接口：
+1）设备信息；
+2）图像数据；
+3）IMU数据；
+4）SLAM；
+5）深度图。
+详细信息参考《双目惯性模组用户使用说明》。
+
+
+支持平台：支持Linux18.04、Windows10平台。
+
+
+模组数据采集软件，采集模组图像及IMU数据，并保存成EuRoC数据集格式，方便用户使用。
+详细信息参考《模组数据采集软件说明文档》
+支持Linux18.04、Windows10平台。
