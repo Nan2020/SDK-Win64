@@ -1,8 +1,9 @@
 #include "seethrough.h"
 #include <windows.h>
-#include <opencv2/calib3d.hpp>
-#include <experimental/filesystem>
-#include <opencv2/imgproc.hpp>
+// #include <opencv2/calib3d.hpp>
+// #include <experimental/filesystem>
+// #include <opencv2/imgproc.hpp>
+#include <iostream>
 
 ALGORITHM_DLL_EXPORT indem::IAlgorithmPlugin* AlgorithmFactory() {
     indem::IAlgorithmPlugin* pAlg = new indem::CSeeThrough();
@@ -22,79 +23,80 @@ namespace indem {
 #define MAX_PATH 256
     bool CSeeThrough::Init(CamaraParams pParams)
     {
-        m_mHeadKl = cv::Mat(3, 3, CV_64FC1, pParams._Kl);
-        m_mHeadKr = cv::Mat(3, 3, CV_64FC1, pParams._Kr);
-        m_mHeadDl = cv::Mat(4, 1, CV_64FC1, pParams._Dl);
-        m_mHeadDr = cv::Mat(4, 1, CV_64FC1, pParams._Dr);
-        m_mHeadRl = cv::Mat(3, 3, CV_64FC1, pParams._Rl);
-        m_mHeadRr = cv::Mat(3, 3, CV_64FC1, pParams._Rr);
-        m_mHeadPl = cv::Mat(3, 4, CV_64FC1, pParams._Pl);
-        m_mHeadPr = cv::Mat(3, 4, CV_64FC1, pParams._Pr);
-        //读取配置信息,确定去畸变参数
-        cv::Size size(pParams._width, pParams._height);
-        int width = size.width;
-        int height = size.height;
-        std::vector<cv::Point2f> vecCxyBoundaryPoints;
-        std::vector<cv::Point2f> vecUndistCxyBoundaryPoints;
-        double cx0 = m_mHeadKl.at<double>(0, 2);
-        double cy0 = m_mHeadKl.at<double>(1, 2);
-        vecCxyBoundaryPoints.push_back(cv::Point2f(cx0, 0));
-        vecCxyBoundaryPoints.push_back(cv::Point2f(cx0, height));
-        vecCxyBoundaryPoints.push_back(cv::Point2f(0, cy0));
-        vecCxyBoundaryPoints.push_back(cv::Point2f(width, cy0));
-        cv::fisheye::undistortPoints(vecCxyBoundaryPoints, vecUndistCxyBoundaryPoints,
-            m_mHeadKl, m_mHeadDl, m_mHeadRl, m_mHeadPl);
+        std::cout<<"Plugin Init"<<std::endl;
+        // m_mHeadKl = cv::Mat(3, 3, CV_64FC1, pParams._Kl);
+        // m_mHeadKr = cv::Mat(3, 3, CV_64FC1, pParams._Kr);
+        // m_mHeadDl = cv::Mat(4, 1, CV_64FC1, pParams._Dl);
+        // m_mHeadDr = cv::Mat(4, 1, CV_64FC1, pParams._Dr);
+        // m_mHeadRl = cv::Mat(3, 3, CV_64FC1, pParams._Rl);
+        // m_mHeadRr = cv::Mat(3, 3, CV_64FC1, pParams._Rr);
+        // m_mHeadPl = cv::Mat(3, 4, CV_64FC1, pParams._Pl);
+        // m_mHeadPr = cv::Mat(3, 4, CV_64FC1, pParams._Pr);
+        // //读取配置信息,确定去畸变参数
+        // cv::Size size(pParams._width, pParams._height);
+        // int width = size.width;
+        // int height = size.height;
+        // std::vector<cv::Point2f> vecCxyBoundaryPoints;
+        // std::vector<cv::Point2f> vecUndistCxyBoundaryPoints;
+        // double cx0 = m_mHeadKl.at<double>(0, 2);
+        // double cy0 = m_mHeadKl.at<double>(1, 2);
+        // vecCxyBoundaryPoints.push_back(cv::Point2f(cx0, 0));
+        // vecCxyBoundaryPoints.push_back(cv::Point2f(cx0, height));
+        // vecCxyBoundaryPoints.push_back(cv::Point2f(0, cy0));
+        // vecCxyBoundaryPoints.push_back(cv::Point2f(width, cy0));
+        // cv::fisheye::undistortPoints(vecCxyBoundaryPoints, vecUndistCxyBoundaryPoints,
+        //     m_mHeadKl, m_mHeadDl, m_mHeadRl, m_mHeadPl);
 
-        int minx = INT_MAX;
-        int miny = INT_MAX;
-        int maxx = INT_MIN;
-        int maxy = INT_MIN;
+        // int minx = INT_MAX;
+        // int miny = INT_MAX;
+        // int maxx = INT_MIN;
+        // int maxy = INT_MIN;
 
-        for (auto& it : vecUndistCxyBoundaryPoints)
-        {
-            minx = min(minx, ((int)floor(it.x)));
-            miny = min(miny, ((int)floor(it.y)));
-            maxx = max(maxx, ((int)ceil(it.x)));
-            maxy = max(maxy, ((int)ceil(it.y)));
-        }
-        cv::Mat Pl = m_mHeadPl.clone();
-        Pl.at<double>(0, 2) -= minx;
-        Pl.at<double>(1, 2) -= miny;
-        size.width = maxx - minx;
-        size.height = maxy - miny;
-        m_iSize._width = size.width;
-        m_iSize._height = size.height;
-        cv::Mat remapX(size, CV_32FC1);
-        cv::Mat remapY(size, CV_32FC1);
+        // for (auto& it : vecUndistCxyBoundaryPoints)
+        // {
+        //     minx = min(minx, ((int)floor(it.x)));
+        //     miny = min(miny, ((int)floor(it.y)));
+        //     maxx = max(maxx, ((int)ceil(it.x)));
+        //     maxy = max(maxy, ((int)ceil(it.y)));
+        // }
+        // cv::Mat Pl = m_mHeadPl.clone();
+        // Pl.at<double>(0, 2) -= minx;
+        // Pl.at<double>(1, 2) -= miny;
+        // size.width = maxx - minx;
+        // size.height = maxy - miny;
+        // m_iSize._width = size.width;
+        // m_iSize._height = size.height;
+        // cv::Mat remapX(size, CV_32FC1);
+        // cv::Mat remapY(size, CV_32FC1);
 
-        cv::fisheye::initUndistortRectifyMap(
-            m_mHeadKl, m_mHeadDl, m_mHeadRl, Pl,
-            size, CV_32FC1, remapX, remapY);
+        // cv::fisheye::initUndistortRectifyMap(
+        //     m_mHeadKl, m_mHeadDl, m_mHeadRl, Pl,
+        //     size, CV_32FC1, remapX, remapY);
 
-        remapX.copyTo(X);
-        remapY.copyTo(Y);
-        m_qWorker.SetWorker(std::bind(&CSeeThrough::RectImageTask, this, std::placeholders::_1));
+        // remapX.copyTo(X);
+        // remapY.copyTo(Y);
         return true;
     }
 
     void CSeeThrough::AddPoseAsync(double time, const Pose& pose)
     {
-
+        std::cout<<"Plguin Add Pose"<<std::endl;
     }
 
     void CSeeThrough::AddImageAsync(double time, unsigned char* pLeft, unsigned char* pRight, int width, int height, int channel)
     {
-        if (m_mCallbacks.size()) {
-            auto itr=m_mCallbacks.find("image");
-            if (itr != m_mCallbacks.end()) {
-                SeeThroughImage image;
-                image._time = time;
-                image._height = height;
-                image._width = width;
-                image._image = cv::Mat(height, width, CV_8UC1, pLeft);
-                m_qWorker.PushData(image);
-            }
-        }
+        std::cout<<"Plguin Add Image"<<std::endl;
+        // if (m_mCallbacks.size()) {
+        //     auto itr=m_mCallbacks.find("image");
+        //     if (itr != m_mCallbacks.end()) {
+        //         SeeThroughImage image;
+        //         image._time = time;
+        //         image._height = height;
+        //         image._width = width;
+        //         image._image = cv::Mat(height, width, CV_8UC1, pLeft);
+        //         m_qWorker.PushData(image);
+        //     }
+        // }
     }
 
     int CSeeThrough::AddCallback(const char* name, PluginCallback pCallback, void* pParam)
@@ -138,18 +140,18 @@ namespace indem {
         return std::move(info);
     }
 
-    void CSeeThrough::RectImageTask(const SeeThroughImage& img)
-    {
-        cv::Mat mImg;
-        cv::remap(img._image, mImg, X, Y, cv::INTER_LINEAR);
-        ImrImage image;
-        image._time = img._time;
-        image._height = mImg.rows;
-        image._width = mImg.cols;
-        image._image = mImg.data;
-        auto& pCallback = m_mCallbacks["image"];
-        ((PluginCallback)pCallback.first)(0, reinterpret_cast<void*>(&image), pCallback.second);
-    }
+    //void CSeeThrough::RectImageTask(const SeeThroughImage& img)
+    //{
+        // cv::Mat mImg;
+        // cv::remap(img._image, mImg, X, Y, cv::INTER_LINEAR);
+        // ImrImage image;
+        // image._time = img._time;
+        // image._height = mImg.rows;
+        // image._width = mImg.cols;
+        // image._image = mImg.data;
+        // auto& pCallback = m_mCallbacks["image"];
+        // ((PluginCallback)pCallback.first)(0, reinterpret_cast<void*>(&image), pCallback.second);
+    //}
 
 }
 

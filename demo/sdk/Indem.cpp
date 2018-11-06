@@ -1,4 +1,5 @@
 #include <iostream>
+#define _CRT_SECURE_NO_WARNING
 #include "imrsdk.h"
 #include <thread>
 #ifdef WIN32
@@ -6,22 +7,7 @@
 #endif
 #include <mutex>
 #include <future>
-// Ð´ppmÍ¼Ïñµ½ÎÄ¼þ
-void ppm_save(char* filename, unsigned char* data, int w, int h)
-{
-    FILE* fp;
-    char header[20];
-
-    fp = fopen(filename, "wb");
-
-    // Ð´Í¼Æ¬¸ñÊ½¡¢¿í¸ß¡¢×î´óÏñËØÖµ
-    fprintf(fp, "P6\n%d %d\n255\n", w, h);
-
-    // Ð´RGBÊý¾Ý
-    fwrite(data, w*h * 3, 1, fp);
-
-    fclose(fp);
-}
+#include <stdio.h>
 
 struct ImrDepthImageTarget
 {
@@ -33,7 +19,7 @@ struct ImrDepthImageTarget
 
 void PoseCallback(int, void* pData, void* pParam) {
 	ImrModulePose* pHeadPose = (ImrModulePose*)pData;
-	//¼ì²éÁ½´ÎÖ®¼äµÄ¼ä¸ô¾àÀëÆ½·½Ó¦µ±Ð¡ÓÚ5cm
+	//æ£€æŸ¥ä¸¤æ¬¡ä¹‹é—´çš„é—´éš”è·ç¦»å¹³æ–¹åº”å½“å°äºŽ5cm
 	static double sdX = 0, sdY = 0, sdZ = 0;
 	double dx = (pHeadPose->_pose._position[0] - sdX);
 	double dy = (pHeadPose->_pose._position[1] - sdY);
@@ -83,13 +69,13 @@ void DepthImageCallback(int ret, void* pData, void* pParam) {
 
 	fp = fopen("Depth.dat", "wb");
 
-	UCHAR* pImage = new UCHAR[Depth->_image_h*Depth->_image_w];
+	unsigned char* pImage = new unsigned char[Depth->_image_h*Depth->_image_w];
 	for (int mv = 0; mv < Depth->_image_h; mv++)
 	{
 		for (int mu = 0; mu < Depth->_image_w; mu++)
 		{
 			//	cout << elas.D1[mv*img_W + mu] << endl;
-			pImage[mv*Depth->_image_w + mu] = (UCHAR)fmax(Depth->_deepptr[mv*Depth->_image_w + mu] * 255.f / maxp, 0.f);
+			pImage[mv*Depth->_image_w + mu] = (unsigned char)fmax(Depth->_deepptr[mv*Depth->_image_w + mu] * 255.f / maxp, 0.f);
 			//	cout << dep.at<uchar>(mv, mu) << endl;
 			fprintf(fp,"%d " ,pImage[mv*Depth->_image_w + mu]);
 
@@ -108,15 +94,15 @@ void main(){
     MRCONFIG config = { 0 };
     strcpy(config.slamPath, "slam.dll");
     config.bSlam = true;
-    //³õÊ¼»¯
+    //SDKåˆå§‹åŒ–
     pSDK->Init(config);
-    //SDK»Øµ÷Í¼ÏñÊý¾Ý
+    //SDKå›¾åƒæ•°æ®å›žè°ƒ
 	pSDK->RegistModuleCameraCallback(SdkCameraCallBack,NULL);
-   //SDK»Øµ÷IMUÊý¾Ý
+   //SDKæ¨¡ç»„IMUæ•°æ®å›žè°ƒ
 	pSDK->RegistModuleIMUCallback(sdkImuCallBack,NULL);
-   //SDK»Øµ÷slam½áËã½á¹û
+   //SDKçš„slamç»“ç®—ç»“æžœå›žè°ƒ
 	pSDK->RegistModulePoseCallback(sdkSLAMResult,NULL);
-    //Éî¶È½âËã£¬DepthImageCallbackÎªÉî¶È½âËã»Øµ÷º¯Êý
+    //å°†DepthImageCallbackè®¾ç½®ä¸ºæ·±åº¦å›¾å›žè°ƒ
     pSDK->AddPluginCallback("depthimage", "depth", DepthImageCallback, NULL);
     std::this_thread::sleep_for(std::chrono::seconds(60 ));
     pSDK->Release();

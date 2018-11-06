@@ -83,4 +83,12 @@ namespace indem {
     };
 }
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 SLAM_DLL_EXPORT indem::ISlamPlugin* SlamFactory();
+
+#ifdef __cplusplus
+}
+#endif

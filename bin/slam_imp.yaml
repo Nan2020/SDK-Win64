@@ -11,3 +11,6 @@ detection_options:
    maxNoKeypoints: 100
 imageDelay: 0.
 displayImages: true
+ThDepth: 3000
+LEFT.height: 400
+LEFT.width: 640

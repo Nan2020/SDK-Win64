@@ -1,7 +1,7 @@
-#include "AlgorithmPlugin.h"
+#include "plugin/AlgorithmPlugin.h"
 #include <unordered_map>
-#include <opencv2/core.hpp>
-#include "QueueWorker.h"
+//#include <opencv2/core.hpp>
+//#include "QueueWorker.h"
 
 /************************************************************************/
 /* see through模块
@@ -37,12 +37,12 @@ namespace indem {
         unsigned char* _image;
     };
 
-    struct SeeThroughImage {
-        double _time;
-        int32_t _width;
-        int32_t _height;
-        cv::Mat _image;
-    };
+    //struct SeeThroughImage {
+    //    double _time;
+    //    int32_t _width;
+    //    int32_t _height;
+    //    cv::Mat _image;
+    //};
     class CSeeThrough : public IAlgorithmPlugin {
     public:
         CSeeThrough();
@@ -59,21 +59,21 @@ namespace indem {
         PluginInfo GetPluginInfo();
 
     private:
-        void RectImageTask(const SeeThroughImage& img);
+        //void RectImageTask(const SeeThroughImage& img);
 
     private:
-        cv::Mat m_mHeadKl, m_mHeadKr;
-        cv::Mat m_mHeadDl, m_mHeadDr;
-        cv::Mat m_mHeadRl, m_mHeadRr;
-        cv::Mat m_mHeadPl, m_mHeadPr;
-        cv::Mat X;
-        cv::Mat Y;
+        //cv::Mat m_mHeadKl, m_mHeadKr;
+        //cv::Mat m_mHeadDl, m_mHeadDr;
+        //cv::Mat m_mHeadRl, m_mHeadRr;
+        //cv::Mat m_mHeadPl, m_mHeadPr;
+        //cv::Mat X;
+        //cv::Mat Y;
 
         typedef std::unordered_map<std::string, std::pair<PluginCallback, void*> > CallbackMap;
         //回调函数
         CallbackMap m_mCallbacks;
 
-        QueueWorker<SeeThroughImage> m_qWorker;
+        //QueueWorker<SeeThroughImage> m_qWorker;
         ImageSize m_iSize;          //输出图像大小
     };
 }
