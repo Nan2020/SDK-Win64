@@ -10,7 +10,7 @@ detection_options:
    octaves: 0
    maxNoKeypoints: 100
 imageDelay: 0.
-displayImages: true
+displayImages: false
 ThDepth: 3000
 LEFT.height: 400
 LEFT.width: 640

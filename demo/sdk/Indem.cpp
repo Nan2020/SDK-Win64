@@ -28,25 +28,18 @@ void PoseCallback(int, void* pData, void* pParam) {
 	sdX = pHeadPose->_pose._position[0];
 	sdY = pHeadPose->_pose._position[1];
 	sdZ = pHeadPose->_pose._position[2];
-	//std::cout << "D: " << ds2 << std::endl;
-	//EXPECT_TRUE(ds2 < 0.005);
 }
 
 void  SdkCameraCallBack(double time, unsigned char* pLeft, unsigned char* pRight, int width, int height, int channel, void* pParam)
 {
-	std::cout << "IMG: " << time<< std::endl;
+	std::cout << "----------------- IMG Come: " << time<<" ----------------"<< std::endl;
 }
 
 void sdkImuCallBack(double time, float accX, float accY, float accZ, float gyrX, float gyrY, float gyrZ, void* pParam)
 {
-		//IMU temp;
-		//temp.imu_time = time;
-		//temp.acc[0] = accX;
-		//temp.acc[1] = accY;
-		//temp.acc[2] = accZ;
-		//temp.gyp[0] = gyrX;
-		//temp.gyp[1] = gyrY;
-		//temp.gyp[2] = gyrZ;
+    std::cout << "IMU: " << time << "\t"
+        << accX << "\t" << accY << "\t" << accZ << "\t"
+        << gyrX << "\t" << gyrY << "\t" << gyrZ << "\t";
 }
 
 void sdkSLAMResult(int, void* pData, void* pParam)
@@ -93,7 +86,8 @@ void main(){
     CIMRSDK* pSDK = new CIMRSDK();
     MRCONFIG config = { 0 };
     strcpy(config.slamPath, "slam.dll");
-    config.bSlam = true;
+    //不开启slam
+    config.bSlam = false;
     //SDK初始化
     pSDK->Init(config);
     //SDK图像数据回调
