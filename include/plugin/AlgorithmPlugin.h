@@ -87,7 +87,7 @@ namespace indem {
         */
         virtual void AddImageAsync(double time, unsigned char* pLeft, unsigned char* pRight,int width,int height,int channel) = 0;
         /*
-        * \brief 用户添加一个新的回调函数
+        * \brief 用户添加一个新的回调函数,返回0表示成功
         */
         virtual int AddCallback(const char* name, PluginCallback pCallback, void* pParam) = 0;
         /*

@@ -13,7 +13,7 @@
 #define INDEM_DLL_EXPORT
 #endif
 
-#define MRSDK_VERSION       1           //SDK版本
+#define MRSDK_VERSION       2           //SDK版本
 
 //预定义的插件返回码
 #define PLG_NOT_EXIST       1           //插件不存在
@@ -21,7 +21,7 @@
 struct MrDetectionData;
 /*
 * \brief 数据回调函数
-* \param iType 返回的信息码
+* \param iType 返回的信息码,对ImrModulePose，返回码为SlamPlugin.h中的枚举值SlamStatus
 * \param pData 设备数据
 * \param pParam 用户定义的参数
 */
