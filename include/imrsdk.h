@@ -13,7 +13,7 @@
 #define INDEM_DLL_EXPORT
 #endif
 
-#define MRSDK_VERSION       2           //SDK版本
+#define MRSDK_VERSION       3           //SDK版本
 
 //预定义的插件返回码
 #define PLG_NOT_EXIST       1           //插件不存在
@@ -54,13 +54,15 @@ typedef void(CALL_METHOD *HotplugCallback)(int iType, void* pParam);
 typedef void (CALL_METHOD *PluginCallback)(int ret, void* pResult, void* pParam);
 
 namespace indem {
-
     //SDK的初始化配置
     struct MRCONFIG {
         char capturePath[128];      //设置捕获路径,空表示不捕获数据
         char loadPath[128];         //设置数据载入路径
         bool bSlam;                 //是否使用slam，使用slam=true
         char slamPath[128];         //设置用户自定义的slam动态库路径,空表示使用默认slam
+        int imuFrequency;           //设置IMU频率,最大1000Hz
+        int imgFrequency;           //设置IMG频率,最大50Hz
+        int poseFrequency;          //设置获取位姿结果频率，最大等于IMU频率
     };
 
 	//可以检测的设备能力
@@ -105,7 +107,7 @@ namespace indem {
         CameraCalibrationParameter GetModuleParams();
         
 		/*
-		* \brief 添加头显位姿回调函数
+		* \brief 添加模组位姿回调函数
 		* \param cb 对应算法处理完毕后，用于数据传出的回调函数
 		* \param param 传给回调函数使用的参数
 		*/
