@@ -49,6 +49,18 @@ struct ImrDepthImageTarget
 	float* _deepptr;    //深度图数据指针,长度为_image_w*_image_h,每个值对应像素位置的深度
 };
 ~~~
+获取点云数据
+~~~
+    pSDK->AddPluginCallback("depthimage", "point_cloud", PointCloudCallback, NULL);
+~~~
+点云回调函数中的pData是如下的一个数据结构：
+~~~
+struct PointCloudData {
+    int _image_w;
+    int _image_h;
+    float* _xyz;
+};
+~~~
 释放资源
 ~~~
     pSDK->Release();
@@ -84,18 +96,24 @@ virtual bool InvokeCommand(const char* commandName, void* pIn, void* pOut);
 #### 添加算法插件  
 用户也可以添加自己的算法扩展到SDK中。demo\plugin中提供了一份示例，展示了如何添加自己的算法插件。所有的插件统一放置在plugin目录下：plugin文件夹下存放子文件夹,每个子文件夹存放着插件动态库及其依赖项,SDK会按照文件夹名字动态加载里头同名的dll/so,作为入口。  
 #### 更新  
-2018.11.16更新
-1. `ImrModulePose`结构添加欧拉角
-2. 宏定义`MRSDK_VERSION`提升到2  
-
-2018.1.16更新  
+2019.3.28更新
+1. 更新plugin/depthimage插件，提供点云数据获取功能
+2. demo增加点云获取操作示例（使用opencv_viz模块）
+   
+2019.1.16更新  
 1. 升级驱动,支持25/50/100Hz频率的图像
 2. 修复SDK数据捕获时崩溃的问题
-3. SDK移除对boost1.68版本的依赖
+3. indem.dll移除对boost1.68版本的依赖
 4. 深度图能够获取ROS需要的P值了
 5. 修复了slam关闭的情况下不能获取模组参数信息的问题
 6. 在不使用slam的情况下不再加载slam模块
 7. 增加更多的错误信息提示
-8. 宏定义`MRSDK_VERSION`提升到3  
+8. 宏定义`MRSDK_VERSION`提升到3 
+   
+2018.11.16更新
+1. `ImrModulePose`结构添加欧拉角
+2. 宏定义`MRSDK_VERSION`提升到2  
+
+ 
 #### FAQ  
 常见问题请参考[FAQ](https://github.com/INDEMIND/SDK-Win64/wiki)

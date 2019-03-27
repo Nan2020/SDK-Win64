@@ -11,9 +11,9 @@
                 "open": false,
                 "params": {
                     "freq": 200,
-                    "hasmap": true,
+                    "hasmap": false,
                     "saveoctomap": false,
-                    "useoctomap": true
+                    "useoctomap": false
                 }
             }
         }
