@@ -9,7 +9,7 @@ INDEMIND双目视觉惯性模组采用全局快门的2X1280X800@50FPS高清摄�
 Windows 10 64位, VS2015, VS2017
 
 #### 硬件要求  
-双目视觉惯性模组要求支持USB3.0接口，仅支持通过SDK获取数据。深度解算以插件形式存在，该插件依赖CUDA9.0，建议使用Geforce GTX 1050以上的显卡
+双目视觉惯性模组要求支持USB3.0接口，仅支持通过SDK获取数据。深度解算以插件形式存在
 
 #### 使用方式  
 创建SDK对象  
@@ -34,33 +34,20 @@ Windows 10 64位, VS2015, VS2017
 ~~~
     pSDK->RegistModulePoseCallback(sdkSLAMResult,NULL);
 ~~~
-获取深度图
+获取深度图和点云
 ~~~
-    pSDK->AddPluginCallback("depthimage", "depth", DepthImageCallback, NULL);
+    pSDK->AddPluginCallback("pointcloud", "depth", CloudDataCallback, NULL);
 ~~~
 回调函数中的pData是如下的一个数据结构:
 ~~~
-struct ImrDepthImageTarget
-{
+struct DepthData {
     double _time;
-	float _cubesize;
-	int _image_w;
-	int _image_h;
-	float* _deepptr;    //深度图数据指针,长度为_image_w*_image_h,每个值对应像素位置的深度
+    unsigned char* _depthImage; //深度图
+    size_t _number;             //点云个数
+    point_xyz* _points;         //点云坐标
 };
 ~~~
-获取点云数据
-~~~
-    pSDK->AddPluginCallback("depthimage", "point_cloud", PointCloudCallback, NULL);
-~~~
-点云回调函数中的pData是如下的一个数据结构：
-~~~
-struct PointCloudData {
-    int _image_w;
-    int _image_h;
-    float* _xyz;
-};
-~~~
+
 释放资源
 ~~~
     pSDK->Release();
@@ -96,9 +83,10 @@ virtual bool InvokeCommand(const char* commandName, void* pIn, void* pOut);
 #### 添加算法插件  
 用户也可以添加自己的算法扩展到SDK中。demo\plugin中提供了一份示例，展示了如何添加自己的算法插件。所有的插件统一放置在plugin目录下：plugin文件夹下存放子文件夹,每个子文件夹存放着插件动态库及其依赖项,SDK会按照文件夹名字动态加载里头同名的dll/so,作为入口。  
 #### 更新  
-2019.3.28更新
-1. 更新plugin/depthimage插件，提供点云数据获取功能
-2. demo增加点云获取操作示例（使用opencv_viz模块）
+2019.3.29更新
+1. 移除依赖cuda的depthimage插件
+2. 添加pointcloud插件，同时提供深度图和点云功能
+3. demo增加点云获取操作示例（使用opencv_viz模块）
    
 2019.1.16更新  
 1. 升级驱动,支持25/50/100Hz频率的图像

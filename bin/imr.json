@@ -1,21 +1,9 @@
 {
     "running": {
-        "log": 0,
         "type": 1,
         "imu": 1,
         "img": 20,
         "pose": 1,
-        "resolution": 1280,
-        "algorithm": {
-            "Detection": {
-                "open": false,
-                "params": {
-                    "freq": 200,
-                    "hasmap": false,
-                    "saveoctomap": false,
-                    "useoctomap": false
-                }
-            }
-        }
+        "resolution": 1280
     }
 }
