@@ -32,7 +32,7 @@ typedef void(CALL_METHOD *DataCallback)(int, void* pData, void* pParam);
 */
 typedef void(CALL_METHOD *ModuleIMUCallback)(double time, float accX, float accY, float accZ, float gyrX, float gyrY, float gyrZ, void* pParam);
 /*
-* \brief 设备IMU数据回调函数
+* \brief 设备图像数据回调函数
 * \param pParam 用户定义的参数
 */
 typedef void(CALL_METHOD *ModuleImageCallback)(double time, unsigned char* pLeft, unsigned char* pRight, int width, int height, int channel, void* pParam);
